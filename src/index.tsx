@@ -7,11 +7,11 @@ import * as serviceWorker from "./serviceWorker";
 import { StoreProvider } from "./utils/store";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <StoreProvider>
       <App />
     </StoreProvider>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );
 

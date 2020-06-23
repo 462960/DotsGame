@@ -11,7 +11,7 @@ const GameContainer: React.FC<Props> = () => {
 
   useEffect(() => {
     store.getSettings();
-    store.getWinners();
+    // store.getWinners();
   }, []);
 
   return (

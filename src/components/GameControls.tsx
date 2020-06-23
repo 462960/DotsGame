@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useObserver } from "mobx-react";
+
+import { StoreContext } from "../utils/store";
 
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -10,30 +13,51 @@ import Button from "@material-ui/core/Button";
 interface Props {}
 
 const GameControls: React.FC<Props> = () => {
-  return (
+  const store = useContext(StoreContext);
+  const [mode, setMode] = useState("");
+  const [name, setName] = useState("");
+
+  const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setMode(event.target.value as string);
+  };
+
+  const handleInput = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setName(event.target.value as string);
+  };
+
+  // useEffect(() => {
+  //   console.log(`I am useEffect ${name}`);
+  // }, [name]);
+
+  return useObserver(() => (
     <ul className="controls">
       <li className="select">
         <FormControl variant="outlined" fullWidth>
-          <InputLabel>Pick mode</InputLabel>
+          <InputLabel id="user-mode">Pick mode</InputLabel>
           <Select
             fullWidth
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value="age"
-            //   onChange={handleChange}
-            label="Age"
+            labelId="user-mode"
+            value={mode}
+            onChange={handleSelect}
+            label="Mode pick"
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {store.selectorsModes.map((x: string, i: number) => {
+              return (
+                <MenuItem key={i} value={x}>
+                  {x}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </li>
       <li className="name">
-        <TextField fullWidth label="Outlined" variant="outlined" />
+        <TextField
+          fullWidth
+          label="Gamer's name"
+          variant="outlined"
+          onChange={handleInput}
+        />
       </li>
       <li className="start">
         <Button color="primary" variant="contained">
@@ -41,7 +65,7 @@ const GameControls: React.FC<Props> = () => {
         </Button>
       </li>
     </ul>
-  );
+  ));
 };
 
 export default GameControls;

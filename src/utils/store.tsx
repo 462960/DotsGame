@@ -12,6 +12,7 @@ type Props = {
 interface Store {
   getSettings: () => void;
   preSet: object | null;
+  selectorsModes: string[];
   userSettings: object | null;
   getWinners: () => void;
   winners: object[];
@@ -25,11 +26,13 @@ interface Store {
 export const StoreProvider: React.FC<Props> = ({ children }) => {
   const store = useLocalStore<Store>(() => ({
     preSet: null,
+    selectorsModes: [],
     userSettings: null,
     winners: [],
     getSettings: async () => {
       const res = await API.gameSettings();
       store.preSet = res;
+      store.selectorsModes = Object.keys(res);
       //   console.log(`getSettings: ${res.easyMode.field}`);
     },
     getWinners: async () => {
