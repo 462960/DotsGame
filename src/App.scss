@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+ul {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+li {
+  list-style: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  margin-top: 7px;
+  & > div {
+    flex: 1 1;
+    border: 1px solid gray;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.game-container {
+  width: 90%;
+  margin: 18px auto;
+  border: 1px solid green;
+  li {
+    padding: 1px;
+  }
+  .controls {
+    display: flex;
+
+    .select {
+      flex: 2 2;
+    }
+    .name {
+      flex: 2 2;
+    }
+    .start {
+      flex: 1 1;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+// Leader board
+.board-container {
+  width: 70%;
+  margin: 0 auto;
+  li {
+    margin: 10px 0;
+  }
+}
+
+.winner-info {
+  display: flex;
+  padding: 2px;
+  span {
+    padding: 5px;
+  }
+  & > span:first-child {
+    flex: 1 1;
+  }
+  & > span:last-child {
+    flex: 3 3;
+    text-align: end;
   }
 }
