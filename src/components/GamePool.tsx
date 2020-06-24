@@ -8,9 +8,19 @@ interface Props {
   mode: string;
 }
 
-const renderPool = (n: number) => {
-  const num = Math.pow(n, 2);
-  return [...Array(num)].map((x: any, i: number) => <li key={i}></li>);
+const renderPool = (settings: any, mode: string) => {
+  const normalMode = mode === "normalMode";
+  const hardMode = mode === "hardMode";
+
+  const row = settings[mode].field;
+  const num = Math.pow(row, 2);
+  return [...Array(num)].map((x: any, i: any) => (
+    <li
+      id={i}
+      className={cn("easyMode", { normalMode, hardMode })}
+      key={i}
+    ></li>
+  ));
 };
 
 const settings = {
@@ -28,14 +38,13 @@ const GamePool: React.FC<Props> = ({ mode }) => {
   //     console.log(`I am useEffect ${store.settings}`);
   //   }, []);
 
-  const handleClick = () => {
-    console.log(`handleClick item`);
+  const handleClick = (e: any) => {
+    console.log(`handleClick item id ${e.target.id}`);
   };
 
   return useObserver(() => (
     <div className="pool-wrapper">
-      {/* I am GamePool */}
-      <ul onClick={handleClick}>{renderPool(settings.easyMode.field)}</ul>
+      <ul onClick={handleClick}>{mode && renderPool(settings, mode)}</ul>
     </div>
   ));
 };

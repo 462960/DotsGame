@@ -8,11 +8,11 @@ interface Props {}
 
 const GameContainer: React.FC<Props> = () => {
   const store = useContext(StoreContext);
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("easyMode");
   const [name, setName] = useState("");
 
   useEffect(() => {
-    // store.getSettings();
+    store.getSettings();
     // store.getWinners();
   }, []);
 

@@ -27,6 +27,7 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
   const store = useLocalStore<Store>(() => ({
     preSet: null,
     selectorsModes: [],
+    // selectorsModes: ["easyMode", "normalMode", "hardMode"],
     userSettings: null,
     winners: [],
     getSettings: async () => {

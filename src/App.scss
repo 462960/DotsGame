@@ -13,7 +13,7 @@ li {
   & > div {
     // display: flex;
     // flex-direction: column;
-    flex: 1;
+    flex: 1 1;
     border: 1px solid gray;
   }
 }
@@ -61,14 +61,14 @@ li {
       display: block;
       padding-bottom: 100%;
     }
-    .five {
-      flex: 1 0 20%;
+    .easyMode {
+      flex: 1 0 17%;
     }
-    .ten {
-      flex: 1 0 10%;
+    .normalMode {
+      flex: 1 0 8%;
     }
-    .fifteen {
-      flex: 1 0 6.66%;
+    .hardMode {
+      flex: 1 0 5.34%;
     }
   }
 }
