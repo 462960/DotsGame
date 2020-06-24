@@ -8,9 +8,33 @@ interface Props {
   mode: string;
 }
 
-const renderPool = (n: number) => {
-  const num = Math.pow(n, 2);
-  return [...Array(num)].map((x: any, i: number) => <li key={i}></li>);
+const renderPool = (settings: any, mode: string) => {
+  const normalMode = mode === "normalMode";
+  const hardMode = mode === "hardMode";
+  const row = settings[mode].field;
+  // Calculated total cells number for chosen level
+  const num = Math.pow(row, 2);
+  let setOfCells = [];
+
+  for (let i = 0; i < num; i++) {
+    let item = {
+      id: i,
+      color: "d",
+    };
+    setOfCells.push(item);
+  }
+  // console.log(`setOfCells: ${setOfCells[0]}`);
+
+  return setOfCells.map((x: { id: any; color: any }) => {
+    const color = x.color;
+    return (
+      <li
+        id={x.id}
+        className={cn("easyMode", color, { normalMode, hardMode })}
+        key={x.id}
+      ></li>
+    );
+  });
 };
 
 const settings = {
@@ -28,14 +52,15 @@ const GamePool: React.FC<Props> = ({ mode }) => {
   //     console.log(`I am useEffect ${store.settings}`);
   //   }, []);
 
-  const handleClick = () => {
-    console.log(`handleClick item`);
+  const handleClick = (e: any) => {
+    console.log(`handleClick item id ${e.target.id}`);
   };
 
   return useObserver(() => (
     <div className="pool-wrapper">
-      {/* I am GamePool */}
-      <ul onClick={handleClick}>{renderPool(settings.easyMode.field)}</ul>
+      <ul onClick={handleClick}>
+        {mode && store.preSet !== null && renderPool(store.preSet, mode)}
+      </ul>
     </div>
   ));
 };

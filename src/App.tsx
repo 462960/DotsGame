@@ -9,7 +9,7 @@ import GameContainer from "./components/GameContainer";
 function App() {
   return (
     <div>
-      <TopBar />
+      {/* <TopBar /> */}
       <div className="wrapper">
         <div>
           <GameContainer />

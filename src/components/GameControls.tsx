@@ -15,9 +15,16 @@ interface Props {
   mode: string;
   setName: (x: string) => void;
   setMode: (x: string) => void;
+  startGame: () => void;
 }
 
-const GameControls: React.FC<Props> = ({ name, mode, setName, setMode }) => {
+const GameControls: React.FC<Props> = ({
+  name,
+  mode,
+  setName,
+  setMode,
+  startGame,
+}) => {
   const store = useContext(StoreContext);
 
   const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -64,7 +71,12 @@ const GameControls: React.FC<Props> = ({ name, mode, setName, setMode }) => {
         />
       </li>
       <li className="start">
-        <Button color="primary" variant="contained">
+        <Button
+          onClick={startGame}
+          color="primary"
+          variant="contained"
+          disabled={!name}
+        >
           Start
         </Button>
       </li>
