@@ -10,12 +10,15 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
-interface Props {}
+interface Props {
+  name: string;
+  mode: string;
+  setName: (x: string) => void;
+  setMode: (x: string) => void;
+}
 
-const GameControls: React.FC<Props> = () => {
+const GameControls: React.FC<Props> = ({ name, mode, setName, setMode }) => {
   const store = useContext(StoreContext);
-  const [mode, setMode] = useState("");
-  const [name, setName] = useState("");
 
   const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMode(event.target.value as string);
@@ -26,8 +29,8 @@ const GameControls: React.FC<Props> = () => {
   };
 
   // useEffect(() => {
-  //   console.log(`I am useEffect ${name}`);
-  // }, [name]);
+  //   console.log(`I am useEffect ${mode}, ${name}`);
+  // }, [name, mode]);
 
   return useObserver(() => (
     <ul className="controls">
@@ -57,6 +60,7 @@ const GameControls: React.FC<Props> = () => {
           label="Gamer's name"
           variant="outlined"
           onChange={handleInput}
+          value={name}
         />
       </li>
       <li className="start">

@@ -11,7 +11,9 @@ li {
   display: flex;
   margin-top: 7px;
   & > div {
-    flex: 1 1;
+    // display: flex;
+    // flex-direction: column;
+    flex: 1;
     border: 1px solid gray;
   }
 }
@@ -36,6 +38,37 @@ li {
       flex: 1 1;
       display: flex;
       align-items: center;
+    }
+  }
+}
+
+// Game pool
+.pool-wrapper {
+  border: 1px solid black;
+  width: 80%;
+  margin: 10px auto;
+  & > ul {
+    display: flex;
+    flex-wrap: wrap;
+    li {
+      background: #bada55;
+      flex: 1 0 17%;
+      border: 1px solid red;
+      cursor: pointer;
+    }
+    li:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+    .five {
+      flex: 1 0 20%;
+    }
+    .ten {
+      flex: 1 0 10%;
+    }
+    .fifteen {
+      flex: 1 0 6.66%;
     }
   }
 }
