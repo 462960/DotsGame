@@ -7,6 +7,7 @@ import { StoreContext } from "../utils/store";
 interface Props {
   mode: string;
   userSettings: object[] | null;
+  setCellIdPickedByUser: (x: number | undefined) => void;
 }
 
 const renderPool = (settings: any, mode: string) => {
@@ -31,16 +32,16 @@ const renderPool = (settings: any, mode: string) => {
 //   hardMode: { field: 15, delay: 900 },
 // };
 
-const GamePool: React.FC<Props> = ({ mode, userSettings }) => {
+const GamePool: React.FC<Props> = ({
+  mode,
+  userSettings,
+  setCellIdPickedByUser,
+}) => {
   const store = useContext(StoreContext);
-
-  const handleClick = (e: any) => {
-    console.log(`handleClick item id ${e.target.id}`);
-  };
 
   return useObserver(() => (
     <div className="pool-wrapper">
-      <ul onClick={handleClick}>
+      <ul onClick={(e: any) => setCellIdPickedByUser(e.target.id)}>
         {mode && userSettings !== null && renderPool(userSettings, mode)}
       </ul>
     </div>
