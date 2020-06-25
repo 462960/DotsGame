@@ -5,18 +5,24 @@ import GameControls from "./GameControls";
 import GamePool from "./GamePool";
 
 interface Props {}
+interface Settings {
+  id: number;
+  color: string;
+}
 
 const GameContainer: React.FC<Props> = () => {
   const store = useContext(StoreContext);
   const [mode, setMode] = useState("");
   const [name, setName] = useState("");
-  const [timerID, setTimerID] = useState(null);
-  const [cellID, setCellID] = useState(null);
-  const [userSettings, setUserSettings] = useState<object[] | null>(null);
+  const [timerID, setTimerID] = useState(undefined);
+  const [cellID, setCellID] = useState<number | undefined>(undefined);
+  const [userSettings, setUserSettings] = useState<Settings[] | null>(null);
 
   useEffect(() => {
     store.getSettings();
     // store.getWinners();
+
+    return () => clearInterval(timerID);
   }, []);
 
   useEffect(() => {
@@ -31,7 +37,7 @@ const GameContainer: React.FC<Props> = () => {
     for (let i = 0; i < num; i++) {
       let item = {
         id: i,
-        color: "d",
+        color: "",
       };
       setOfCells.push(item);
     }
@@ -39,11 +45,25 @@ const GameContainer: React.FC<Props> = () => {
   }, [mode]);
 
   const startGame = () => {
-    console.log(`I am startGame`);
+    // console.log(`I am startGame`);
+    generateCellID();
   };
 
   const generateCellID = () => {
-    function checkIfCellUsed() {}
+    // let random: number | undefined;
+    let cellsTotal: number | any =
+      userSettings !== null && userSettings?.length;
+
+    function checkIfCellUsed() {
+      const num: number = Math.floor(Math.random() * cellsTotal);
+      // Check if cell is already colored
+      const checkUsage = userSettings !== null && userSettings[num].color;
+      // checkUsage
+      //   ? console.log(`I am Virgin: id ${num}`)
+      //   : console.log(`I am Used: id ${num}`);
+      // If not colored assign the id
+      checkUsage ? checkIfCellUsed() : setCellID(num);
+    }
 
     checkIfCellUsed();
   };
