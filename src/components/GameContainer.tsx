@@ -68,7 +68,11 @@ const GameContainer: React.FC<Props> = () => {
   const manageCellColors = () => {
     userSettings !== null &&
       !userSettings[cellID].color &&
-      setUserSettings((x: any) => [...x, (x[cellID].color = "blue")]);
+      setUserSettings((x: any) => [
+        ...x.slice(0, cellID),
+        { id: cellID, color: "blue" },
+        ...x.slice(cellID + 1),
+      ]);
   };
 
   const calculateScores = () => {

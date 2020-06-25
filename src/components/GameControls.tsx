@@ -76,6 +76,7 @@ const GameControls: React.FC<Props> = ({
           color="primary"
           variant="contained"
           disabled={!name}
+          fullWidth
         >
           Start
         </Button>

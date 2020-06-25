@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -10,16 +14,18 @@ li {
 .wrapper {
   display: flex;
   margin-top: 7px;
-  & > div {
-    // display: flex;
-    // flex-direction: column;
-    flex: 1 1;
+  & > div:first-child {
+    flex: 1;
+    border: 1px solid gray;
+  }
+  & > div:last-child {
+    flex: 1;
     border: 1px solid gray;
   }
 }
 
 .game-container {
-  width: 90%;
+  width: 95%;
   margin: 18px auto;
   border: 1px solid green;
   li {
@@ -29,30 +35,30 @@ li {
     display: flex;
 
     .select {
-      flex: 2 2;
+      flex: 1;
     }
     .name {
-      flex: 2 2;
+      flex: 1;
     }
     .start {
-      flex: 1 1;
+      flex: 2;
       display: flex;
       align-items: center;
     }
   }
 }
 
-// Game pool
+//Game pool
 .pool-wrapper {
   border: 1px solid black;
-  width: 80%;
+  width: 85%;
   margin: 10px auto;
   & > ul {
     display: flex;
     flex-wrap: wrap;
     li {
       flex: 1 0 17%;
-      border: 1px solid red;
+      border: 1px solid rgb(87, 84, 84);
       cursor: pointer;
     }
     li:after {
@@ -81,9 +87,31 @@ li {
   }
 }
 
+// .pool-wrapper {
+//   & > ul {
+//     overflow: hidden;
+//     width: 80%;
+//     margin: 5px auto 0;
+//     border: 1px solid black;
+//     li {
+
+//       cursor: pointer;
+//       padding-bottom: 20%;
+//       border: 1px solid gray;
+//       width: 20%;
+
+//       float: left;
+//       &:nth-child(5n) {
+//         float: right;
+//         margin-right: 0;
+//       }
+//     }
+//   }
+// }
+
 // Leader board
 .board-container {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   li {
     margin: 10px 0;
