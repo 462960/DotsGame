@@ -13,7 +13,6 @@ interface Store {
   getSettings: () => void;
   preSet: object | null;
   selectorsModes: string[];
-  // userSettings: object | null;
   getWinners: () => void;
   winners: object[];
   // loaders: Array<object>;
@@ -28,7 +27,6 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
     preSet: null,
     selectorsModes: [],
     // selectorsModes: ["easyMode", "normalMode", "hardMode"],
-    // userSettings: null,
     winners: [],
     getSettings: async () => {
       const res = await API.gameSettings();
