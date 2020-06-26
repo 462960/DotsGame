@@ -12,8 +12,11 @@ interface Settings {
 
 const GameContainer: React.FC<Props> = () => {
   const store = useContext(StoreContext);
+  const [isGame, setIsGame] = useState(false);
+  const [buttonText, setButtonText] = useState<string>("Play");
   const [mode, setMode] = useState("");
   const [name, setName] = useState("");
+  const [winner, setWinner] = useState("");
   const [timerID, setTimerID] = useState(undefined);
   const [cellID, setCellID] = useState<any>(undefined);
   const [cellIdPickedByUser, setCellIdPickedByUser] = useState<
@@ -25,7 +28,7 @@ const GameContainer: React.FC<Props> = () => {
 
   useEffect(() => {
     store.getSettings();
-    store.getWinners();
+    // store.getWinners();
 
     return () => clearTimeout(timerID);
   }, []);
@@ -50,35 +53,80 @@ const GameContainer: React.FC<Props> = () => {
   }, [mode]);
 
   useEffect(() => {
-    console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
+    setGreen();
+    setRed();
+    // console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
   }, [cellIdPickedByUser]);
 
   useEffect(() => {
-    userSettings !== null && manageCellColors();
+    userSettings !== null && calculateScores();
+  }, [userSettings]);
+
+  useEffect(() => {
+    userSettings !== null && calculateWinner();
+  }, [userScore, computerScore]);
+
+  useEffect(() => {
+    cellID && setBlue();
   }, [cellID]);
 
   const startGame = () => {
-    // console.log(`I am startGame`);
     generateCellID();
     // startTimer();
-    // manageCellColors();
+    setIsGame(true);
+    // store.updateWinners(name);
   };
 
-  const manageCellColors = () => {
+  const colorsUpdater = (color: string) => {
+    setUserSettings((x: any) => [
+      ...x.slice(0, cellID),
+      { id: cellID, color },
+      ...x.slice(cellID + 1),
+    ]);
+  };
+
+  const setBlue = () => {
     userSettings !== null &&
       !userSettings[cellID].color &&
-      setUserSettings((x: any) => [
-        ...x.slice(0, cellID),
-        { id: cellID, color: "blue" },
-        ...x.slice(cellID + 1),
-      ]);
+      colorsUpdater("blue");
+  };
+
+  const setGreen = () => {
+    userSettings !== null &&
+      userSettings[cellID].color &&
+      cellID == cellIdPickedByUser &&
+      colorsUpdater("green");
+  };
+
+  const setRed = () => {
+    userSettings !== null &&
+      userSettings[cellID].color &&
+      cellID != cellIdPickedByUser &&
+      colorsUpdater("red");
   };
 
   const calculateScores = () => {
+    setUserScore(0);
+    setComputerScore(0);
     userSettings?.forEach((x) => {
       x.color === "green" && setUserScore((x: number) => x + 1);
       x.color === "red" && setComputerScore((x: number) => x + 1);
     });
+  };
+
+  const calculateWinner = () => {
+    const cellsRange =
+      userSettings !== null && Math.floor(userSettings?.length / 2);
+
+    if (userScore > cellsRange) {
+      setWinner(name);
+      setIsGame(false);
+      setButtonText("Play again");
+    } else if (computerScore > cellsRange) {
+      setWinner("Computer");
+      setIsGame(false);
+      setButtonText("Play again");
+    }
   };
 
   const startTimer = () => {
@@ -114,6 +162,8 @@ const GameContainer: React.FC<Props> = () => {
       <GameControls
         mode={mode}
         name={name}
+        isGame={isGame}
+        buttonText={buttonText}
         setMode={setMode}
         setName={setName}
         startGame={startGame}

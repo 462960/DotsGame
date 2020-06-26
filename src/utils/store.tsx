@@ -1,5 +1,6 @@
 import React, { createContext } from "react";
 import { useLocalStore } from "mobx-react";
+import dateFormat from "dateformat";
 
 import * as API from "./api";
 
@@ -15,11 +16,7 @@ interface Store {
   selectorsModes: string[];
   getWinners: () => void;
   winners: object[];
-  // loaders: Array<object>;
-  // Interchangable in many cases
-  loaders: object[];
-  addLoader: (loader: object) => void;
-  removeLoader: (i: number) => void;
+  updateWinners: (x: string) => void;
 }
 
 export const StoreProvider: React.FC<Props> = ({ children }) => {
@@ -32,23 +29,18 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
       const res = await API.gameSettings();
       store.preSet = res;
       store.selectorsModes = Object.keys(res);
-      //   console.log(`getSettings: ${res.easyMode.field}`);
     },
     getWinners: async () => {
       const res = await API.gameWinners();
       store.winners = res;
-      //   console.log(`getWinners: ${res[0]}`);
     },
 
-    loaders: [{ name: "probe" }],
-    addLoader: (loader) => {
-      store.loaders.push(loader);
-    },
-    removeLoader: (i) => {
-      store.loaders = [
-        ...store.loaders.slice(0, i),
-        ...store.loaders.slice(i + 1),
-      ];
+    updateWinners: (name: string) => {
+      const now = new Date();
+      const formatted = dateFormat(now, "mmmm dS, yyyy, h:MM:ss TT");
+      console.log(`Date: ${formatted}, Name: ${name}`);
+      API.winnersUpdater(name, formatted);
+      // API.winnersUpdater("Dev", "Email obmanutogo mozno?");
     },
   }));
 
