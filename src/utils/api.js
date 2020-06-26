@@ -19,3 +19,14 @@ export async function gameWinners() {
     console.error(error);
   }
 }
+
+export function winnersUpdater(winner, date) {
+  try {
+    axios.post(`${URL}/winners`, {
+      winner,
+      date,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}

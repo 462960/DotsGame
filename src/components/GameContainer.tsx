@@ -74,6 +74,7 @@ const GameContainer: React.FC<Props> = () => {
     generateCellID();
     // startTimer();
     setIsGame(true);
+    // store.updateWinners(name);
   };
 
   const colorsUpdater = (color: string) => {
