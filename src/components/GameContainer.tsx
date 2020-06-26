@@ -12,8 +12,11 @@ interface Settings {
 
 const GameContainer: React.FC<Props> = () => {
   const store = useContext(StoreContext);
+  const [isGame, setIsGame] = useState(false);
+  const [buttonText, setButtonText] = useState<string>("Play");
   const [mode, setMode] = useState("");
   const [name, setName] = useState("");
+  const [winner, setWinner] = useState("");
   const [timerID, setTimerID] = useState(undefined);
   const [cellID, setCellID] = useState<any>(undefined);
   const [cellIdPickedByUser, setCellIdPickedByUser] = useState<
@@ -56,14 +59,21 @@ const GameContainer: React.FC<Props> = () => {
   }, [cellIdPickedByUser]);
 
   useEffect(() => {
-    userSettings !== null && setBlue();
+    userSettings !== null && calculateScores();
+  }, [userSettings]);
+
+  useEffect(() => {
+    userSettings !== null && calculateWinner();
+  }, [userScore, computerScore]);
+
+  useEffect(() => {
+    cellID && setBlue();
   }, [cellID]);
 
   const startGame = () => {
-    // console.log(`I am startGame`);
     generateCellID();
     // startTimer();
-    // setBlue();
+    setIsGame(true);
   };
 
   const colorsUpdater = (color: string) => {
@@ -95,10 +105,27 @@ const GameContainer: React.FC<Props> = () => {
   };
 
   const calculateScores = () => {
+    setUserScore(0);
+    setComputerScore(0);
     userSettings?.forEach((x) => {
       x.color === "green" && setUserScore((x: number) => x + 1);
       x.color === "red" && setComputerScore((x: number) => x + 1);
     });
+  };
+
+  const calculateWinner = () => {
+    const cellsRange =
+      userSettings !== null && Math.floor(userSettings?.length / 2);
+
+    if (userScore > cellsRange) {
+      setWinner(name);
+      setIsGame(false);
+      setButtonText("Play again");
+    } else if (computerScore > cellsRange) {
+      setWinner("Computer");
+      setIsGame(false);
+      setButtonText("Play again");
+    }
   };
 
   const startTimer = () => {
@@ -134,6 +161,8 @@ const GameContainer: React.FC<Props> = () => {
       <GameControls
         mode={mode}
         name={name}
+        isGame={isGame}
+        buttonText={buttonText}
         setMode={setMode}
         setName={setName}
         startGame={startGame}

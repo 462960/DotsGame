@@ -13,6 +13,8 @@ import Button from "@material-ui/core/Button";
 interface Props {
   name: string;
   mode: string;
+  isGame: boolean;
+  buttonText: string;
   setName: (x: string) => void;
   setMode: (x: string) => void;
   startGame: () => void;
@@ -21,6 +23,8 @@ interface Props {
 const GameControls: React.FC<Props> = ({
   name,
   mode,
+  isGame,
+  buttonText,
   setName,
   setMode,
   startGame,
@@ -71,10 +75,10 @@ const GameControls: React.FC<Props> = ({
           onClick={startGame}
           color="primary"
           variant="contained"
-          disabled={!name || !mode}
+          disabled={!name || !mode || isGame}
           fullWidth
         >
-          Start
+          {buttonText}
         </Button>
       </li>
     </ul>
