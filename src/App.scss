@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -10,18 +14,18 @@ li {
 .wrapper {
   display: flex;
   margin-top: 7px;
+
   & > div {
-    // display: flex;
-    // flex-direction: column;
-    flex: 1 1;
-    border: 1px solid gray;
+    flex: 1;
+  }
+  & > div:first-child {
+    border-right: 1px solid gray;
   }
 }
 
 .game-container {
-  width: 90%;
+  width: 95%;
   margin: 18px auto;
-  border: 1px solid green;
   li {
     padding: 1px;
   }
@@ -29,31 +33,30 @@ li {
     display: flex;
 
     .select {
-      flex: 2 2;
+      flex: 1;
     }
     .name {
-      flex: 2 2;
+      flex: 1;
     }
     .start {
-      flex: 1 1;
+      flex: 2;
       display: flex;
       align-items: center;
     }
   }
 }
 
-// Game pool
+//Game pool
 .pool-wrapper {
-  border: 1px solid black;
-  width: 80%;
+  border: 1px solid gray;
+  width: 75%;
   margin: 10px auto;
   & > ul {
     display: flex;
     flex-wrap: wrap;
     li {
-      background: #bada55;
       flex: 1 0 17%;
-      border: 1px solid red;
+      border: 1px solid rgb(87, 84, 84);
       cursor: pointer;
     }
     li:after {
@@ -65,17 +68,26 @@ li {
       flex: 1 0 17%;
     }
     .normalMode {
-      flex: 1 0 8%;
+      flex: 1 0 9.8%;
     }
     .hardMode {
-      flex: 1 0 5.34%;
+      flex: 1 0 6.34%;
+    }
+    .blue {
+      background: blue;
+    }
+    .green {
+      background: green;
+    }
+    .red {
+      background: red;
     }
   }
 }
 
 // Leader board
 .board-container {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   li {
     margin: 10px 0;
