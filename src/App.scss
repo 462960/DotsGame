@@ -14,20 +14,18 @@ li {
 .wrapper {
   display: flex;
   margin-top: 7px;
-  & > div:first-child {
+
+  & > div {
     flex: 1;
-    border: 1px solid gray;
   }
-  & > div:last-child {
-    flex: 1;
-    border: 1px solid gray;
+  & > div:first-child {
+    border-right: 1px solid gray;
   }
 }
 
 .game-container {
   width: 95%;
   margin: 18px auto;
-  border: 1px solid green;
   li {
     padding: 1px;
   }
@@ -50,8 +48,8 @@ li {
 
 //Game pool
 .pool-wrapper {
-  border: 1px solid black;
-  width: 85%;
+  border: 1px solid gray;
+  width: 75%;
   margin: 10px auto;
   & > ul {
     display: flex;
@@ -70,10 +68,10 @@ li {
       flex: 1 0 17%;
     }
     .normalMode {
-      flex: 1 0 8%;
+      flex: 1 0 9.8%;
     }
     .hardMode {
-      flex: 1 0 5.34%;
+      flex: 1 0 6.34%;
     }
     .blue {
       background: blue;
@@ -86,28 +84,6 @@ li {
     }
   }
 }
-
-// .pool-wrapper {
-//   & > ul {
-//     overflow: hidden;
-//     width: 80%;
-//     margin: 5px auto 0;
-//     border: 1px solid black;
-//     li {
-
-//       cursor: pointer;
-//       padding-bottom: 20%;
-//       border: 1px solid gray;
-//       width: 20%;
-
-//       float: left;
-//       &:nth-child(5n) {
-//         float: right;
-//         margin-right: 0;
-//       }
-//     }
-//   }
-// }
 
 // Leader board
 .board-container {

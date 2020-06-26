@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { useObserver } from "mobx-react";
 
 import { StoreContext } from "../utils/store";
@@ -34,10 +34,6 @@ const GameControls: React.FC<Props> = ({
   const handleInput = (event: React.ChangeEvent<{ value: unknown }>) => {
     setName(event.target.value as string);
   };
-
-  // useEffect(() => {
-  //   console.log(`I am useEffect ${mode}, ${name}`);
-  // }, [name, mode]);
 
   return useObserver(() => (
     <ul className="controls">
@@ -75,7 +71,7 @@ const GameControls: React.FC<Props> = ({
           onClick={startGame}
           color="primary"
           variant="contained"
-          disabled={!name}
+          disabled={!name || !mode}
           fullWidth
         >
           Start

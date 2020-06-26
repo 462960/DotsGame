@@ -16,7 +16,6 @@ const GameContainer: React.FC<Props> = () => {
   const [name, setName] = useState("");
   const [timerID, setTimerID] = useState(undefined);
   const [cellID, setCellID] = useState<any>(undefined);
-  // const [cellID, setCellID] = useState<number | undefined>(undefined);
   const [cellIdPickedByUser, setCellIdPickedByUser] = useState<
     number | undefined
   >(undefined);
