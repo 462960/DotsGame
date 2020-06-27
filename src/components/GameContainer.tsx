@@ -53,8 +53,10 @@ const GameContainer: React.FC<Props> = () => {
   }, [mode]);
 
   useEffect(() => {
-    setGreen();
-    setRed();
+    cellIdPickedByUser && setGreen();
+    cellIdPickedByUser && setRed();
+    cellIdPickedByUser && setCellIdPickedByUser(undefined);
+
     // console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
   }, [cellIdPickedByUser]);
 
@@ -67,7 +69,8 @@ const GameContainer: React.FC<Props> = () => {
   }, [userScore, computerScore]);
 
   useEffect(() => {
-    cellID && setBlue();
+    cellID && startTimer();
+    // cellID === undefined && isGame && setBlue();
   }, [cellID]);
 
   const startGame = () => {
@@ -131,8 +134,13 @@ const GameContainer: React.FC<Props> = () => {
 
   const startTimer = () => {
     const delay = store.preSet[mode].delay;
+    setBlue();
     const timer: any = setTimeout(() => {
-      console.log(`delay: ${delay}`);
+      colorsUpdater("red");
+      setCellID(undefined);
+      // generateCellID();
+      // startTimer();
+      // console.log(`delay: ${delay}`);
     }, delay);
 
     setTimerID(timer);
@@ -157,6 +165,12 @@ const GameContainer: React.FC<Props> = () => {
     checkIfCellUsed();
   };
 
+  const handleCellClick = (e: any) => {
+    setCellIdPickedByUser(e.target.id);
+    clearTimeout(timerID);
+    // generateCellID();
+  };
+
   return (
     <div className="game-container">
       <GameControls
@@ -171,7 +185,7 @@ const GameContainer: React.FC<Props> = () => {
       <GamePool
         mode={mode}
         userSettings={userSettings}
-        setCellIdPickedByUser={setCellIdPickedByUser}
+        handleCellClick={handleCellClick}
       />
     </div>
   );
