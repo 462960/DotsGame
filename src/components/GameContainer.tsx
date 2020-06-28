@@ -28,7 +28,10 @@ const GameContainer: React.FC<Props> = () => {
   const [computerScore, setComputerScore] = useState<number>(0);
 
   useEffect(() => {
-    isNext && startTimer();
+    if (isNext) {
+      setCellID(undefined);
+      setTimerID(undefined);
+    }
   }, [isNext]);
 
   useEffect(() => {
@@ -49,9 +52,6 @@ const GameContainer: React.FC<Props> = () => {
   useEffect(() => {
     cellIdPickedByUser && setGreen();
     cellIdPickedByUser && setRed();
-    // cellIdPickedByUser && setCellIdPickedByUser(undefined);
-
-    // console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
   }, [cellIdPickedByUser]);
 
   useEffect(() => {
@@ -63,11 +63,12 @@ const GameContainer: React.FC<Props> = () => {
   }, [userScore, computerScore]);
 
   useEffect(() => {
+    const checkAvailability =
+      userSettings !== null && userSettings.some((x: any) => !x.color);
     cellID !== undefined && isGame && startTimer();
-    cellID === undefined && isGame && generateCellID();
+    cellID === undefined && isGame && checkAvailability && generateCellID();
     !isGame && setCellID(undefined);
-    console.log(`CellID: ${cellID}, isGame: ${isGame}`);
-  }, [isGame, cellID]);
+  }, [isGame, cellID, userSettings]);
 
   const createCellsGrid = () => {
     // Creates cells grid
@@ -90,10 +91,7 @@ const GameContainer: React.FC<Props> = () => {
   };
 
   const startGame = () => {
-    // generateCellID();
-    // startTimer();
     setIsGame(true);
-    // store.updateWinners(name);
   };
 
   const colorsUpdater = (color: string) => {
@@ -141,12 +139,13 @@ const GameContainer: React.FC<Props> = () => {
       setIsGame(false);
       setWinner(name);
       setButtonText("Play again");
+      clearTimeout(timerID);
     } else if (computerScore > cellsRange) {
       setIsGame(false);
       setWinner("Computer");
       setCellID(undefined);
       setButtonText("Play again");
-      console.log(`output: ${computerScore}, ${cellsRange}`);
+      clearTimeout(timerID);
     }
   };
 
@@ -155,6 +154,8 @@ const GameContainer: React.FC<Props> = () => {
     setBlue();
     setCellIdPickedByUser(undefined);
     setIsNext(false);
+    clearTimeout(timerID);
+
     const timer: any = setTimeout(() => {
       colorsUpdater("red");
       setCellID(undefined);
@@ -164,7 +165,6 @@ const GameContainer: React.FC<Props> = () => {
   };
 
   const generateCellID = () => {
-    // let random: number | undefined;
     let cellsTotal: number | any =
       userSettings !== null && userSettings?.length;
 
@@ -172,10 +172,6 @@ const GameContainer: React.FC<Props> = () => {
       const num: number = Math.floor(Math.random() * cellsTotal);
       // Check if cell is already colored
       const checkUsage = userSettings !== null && userSettings[num].color;
-      // checkUsage
-      //   ? console.log(`I am Virgin: id ${num}`)
-      //   : console.log(`I am Used: id ${num}`);
-      // If not colored assign the id
       checkUsage ? checkIfCellUsed() : setCellID(num);
     }
 
