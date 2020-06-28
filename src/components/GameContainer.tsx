@@ -13,6 +13,7 @@ interface Settings {
 const GameContainer: React.FC<Props> = () => {
   const store = useContext(StoreContext);
   const [isGame, setIsGame] = useState(false);
+  const [isNext, setIsNext] = useState(false);
   const [buttonText, setButtonText] = useState<string>("Play");
   const [mode, setMode] = useState("");
   const [name, setName] = useState("");
@@ -27,13 +28,49 @@ const GameContainer: React.FC<Props> = () => {
   const [computerScore, setComputerScore] = useState<number>(0);
 
   useEffect(() => {
+    isNext && startTimer();
+  }, [isNext]);
+
+  useEffect(() => {
+    // Fetches initial data from the server
     store.getSettings();
     // store.getWinners();
 
+    createCellsGrid();
+
+    // Clears timeout if user quits abruptly
     return () => clearTimeout(timerID);
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
+    isGame && createCellsGrid();
+  }, [isGame]);
+
+  useEffect(() => {
+    cellIdPickedByUser && setGreen();
+    cellIdPickedByUser && setRed();
+    // cellIdPickedByUser && setCellIdPickedByUser(undefined);
+
+    // console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
+  }, [cellIdPickedByUser]);
+
+  useEffect(() => {
+    userSettings !== null && calculateScores();
+  }, [userSettings]);
+
+  useEffect(() => {
+    userSettings !== null && calculateWinner();
+  }, [userScore, computerScore]);
+
+  useEffect(() => {
+    cellID !== undefined && isGame && startTimer();
+    cellID === undefined && isGame && generateCellID();
+    !isGame && setCellID(undefined);
+    console.log(`CellID: ${cellID}, isGame: ${isGame}`);
+  }, [isGame, cellID]);
+
+  const createCellsGrid = () => {
+    // Creates cells grid
     const row = store.preSet !== null && store.preSet[mode].field;
     // Calculated total cells number for chosen level
     const num = row && Math.pow(row, 2);
@@ -50,31 +87,10 @@ const GameContainer: React.FC<Props> = () => {
       setOfCells.push(item);
     }
     setUserSettings(setOfCells);
-  }, [mode]);
-
-  useEffect(() => {
-    cellIdPickedByUser && setGreen();
-    cellIdPickedByUser && setRed();
-    cellIdPickedByUser && setCellIdPickedByUser(undefined);
-
-    // console.log(`Picked ID ${cellIdPickedByUser}, Generated ID ${cellID}`);
-  }, [cellIdPickedByUser]);
-
-  useEffect(() => {
-    userSettings !== null && calculateScores();
-  }, [userSettings]);
-
-  useEffect(() => {
-    userSettings !== null && calculateWinner();
-  }, [userScore, computerScore]);
-
-  useEffect(() => {
-    cellID && startTimer();
-    // cellID === undefined && isGame && setBlue();
-  }, [cellID]);
+  };
 
   const startGame = () => {
-    generateCellID();
+    // generateCellID();
     // startTimer();
     setIsGame(true);
     // store.updateWinners(name);
@@ -122,25 +138,26 @@ const GameContainer: React.FC<Props> = () => {
       userSettings !== null && Math.floor(userSettings?.length / 2);
 
     if (userScore > cellsRange) {
-      setWinner(name);
       setIsGame(false);
+      setWinner(name);
       setButtonText("Play again");
     } else if (computerScore > cellsRange) {
-      setWinner("Computer");
       setIsGame(false);
+      setWinner("Computer");
+      setCellID(undefined);
       setButtonText("Play again");
+      console.log(`output: ${computerScore}, ${cellsRange}`);
     }
   };
 
   const startTimer = () => {
     const delay = store.preSet[mode].delay;
     setBlue();
+    setCellIdPickedByUser(undefined);
+    setIsNext(false);
     const timer: any = setTimeout(() => {
       colorsUpdater("red");
       setCellID(undefined);
-      // generateCellID();
-      // startTimer();
-      // console.log(`delay: ${delay}`);
     }, delay);
 
     setTimerID(timer);
@@ -168,11 +185,14 @@ const GameContainer: React.FC<Props> = () => {
   const handleCellClick = (e: any) => {
     setCellIdPickedByUser(e.target.id);
     clearTimeout(timerID);
-    // generateCellID();
+    setIsNext(true);
   };
 
   return (
     <div className="game-container">
+      <div>
+        User Score: {userScore}, Comp Score: {computerScore}
+      </div>
       <GameControls
         mode={mode}
         name={name}
