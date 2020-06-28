@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import cn from "classnames";
-import { useObserver } from "mobx-react";
-
-import { StoreContext } from "../utils/store";
 
 interface Props {
   mode: string;
   userSettings: object[] | null;
-  setCellIdPickedByUser: (x: number | undefined) => void;
+  handleCellClick: (x: any) => void;
 }
 
 const renderPool = (settings: any, mode: string) => {
@@ -32,20 +29,14 @@ const renderPool = (settings: any, mode: string) => {
 //   hardMode: { field: 15, delay: 900 },
 // };
 
-const GamePool: React.FC<Props> = ({
-  mode,
-  userSettings,
-  setCellIdPickedByUser,
-}) => {
-  const store = useContext(StoreContext);
-
-  return useObserver(() => (
+const GamePool: React.FC<Props> = ({ mode, userSettings, handleCellClick }) => {
+  return (
     <div className="pool-wrapper">
-      <ul onClick={(e: any) => setCellIdPickedByUser(e.target.id)}>
+      <ul onClick={handleCellClick}>
         {mode && userSettings !== null && renderPool(userSettings, mode)}
       </ul>
     </div>
-  ));
+  );
 };
 
 export default GamePool;
